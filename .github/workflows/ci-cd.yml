@@ -1,0 +1,86 @@
+# This is a simplified CI pipeline focusing on linting and building.
+name: Basic CI Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # This single job will handle linting, validation, and building the artifact.
+  lint-and-build:
+    name: Lint and Build
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Step 1: Get the code from the repository
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    # Step 2: Set up the Node.js environment
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    # Step 3: Install linting tools
+    - name: Install dependencies
+      run: |
+        npm init -y
+        npm install --save-dev htmlhint stylelint stylelint-config-standard eslint
+        
+    # Step 4: Run all the linters
+    - name: Validate HTML
+      run: npx htmlhint index.html || true # Use '|| true' if you don't want the build to fail on linting errors
+      
+    - name: Lint CSS
+      run: |
+        echo 'module.exports = { extends: ["stylelint-config-standard"] };' > .stylelintrc.js
+        npx stylelint "*.css" || true
+        
+    - name: Lint JavaScript
+      run: |
+        echo 'module.exports = { env: { browser: true, es2021: true }, extends: ["eslint:recommended"], parserOptions: { ecmaVersion: 12, sourceType: "module" }, rules: {} };' > .eslintrc.js
+        npx eslint script.js || true
+
+    # Step 5: Prepare the site for deployment
+    - name: Setup GitHub Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Build site artifact
+      run: |
+        mkdir -p _site
+        cp *.html *.css *.js *.md _site/ 2>/dev/null || true
+        
+    # Step 6: Upload the built site as an artifact
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: _site
+
+  # This job handles the deployment to GitHub Pages.
+  deploy:
+    name: Deploy to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    # It will only run after the 'lint-and-build' job succeeds
+    needs: lint-and-build
+    # And only on pushes to the main or master branch
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

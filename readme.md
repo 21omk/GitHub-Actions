@@ -1,8 +1,21 @@
 # Login & Registration System
 
-[![CI/CD Pipeline](https://github.com/om-katyarmal_gavsgslb/GitHub_Actions/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/om-katyarmal_gavsgslb/GitHub_Actions/actions/workflows/ci-cd.yml)
+[![CI/CD Pipeline](https://github.com/21omk/GitHub-Actions/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/21omk/GitHub-Actions/actions/workflows/ci-cd.yml)
 
-A simple, responsive login and registration system built with HTML, CSS, and JavaScript.
+A simple, responsive login and registration system built with HTML, CSS, and JavaScript. This project demonstrates modern web development practices with comprehensive CI/CD integration, automated testing, and quality assurance.
+
+🔗 **[Live Demo](https://21omk.github.io/GitHub-Actions/)** | 📚 **[Workflows Documentation](WORKFLOWS.md)**
+
+## Table of Contents
+
+- [Features](#features)
+- [How to Use](#how-to-use)
+- [Files](#files)
+- [Demo](#demo)
+- [Technical Details](#technical-details)
+- [GitHub Actions CI/CD Pipeline](#github-actions-cicd-pipeline)
+- [Local Development](#local-development)
+- [Contributing](#contributing)
 
 ## Features
 
@@ -81,3 +94,44 @@ This repository includes a comprehensive GitHub Actions workflow that provides:
 - **Pull Request**: Validates code quality and runs tests on pull requests
 
 The workflow ensures code quality, security, and functionality before any deployment, providing confidence in the application's reliability.
+
+## Local Development
+
+To set up this project locally:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/21omk/GitHub-Actions.git
+   cd GitHub-Actions
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Run the application:**
+   - Open `index.html` directly in your browser, or
+   - Use the development server: `npm run serve`
+
+4. **Run tests:**
+   ```bash
+   npm test
+   ```
+
+5. **Run linting:**
+   ```bash
+   npm run lint
+   ```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run tests and linting to ensure quality
+5. Commit your changes (`git commit -m 'Add some amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+All contributions are subject to our CI/CD pipeline which includes code quality checks, security scanning, and automated testing.
